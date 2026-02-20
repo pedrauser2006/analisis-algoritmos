@@ -3,21 +3,248 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/index.css" />
     <title>Análisis de Algoritmos</title>
+    <link rel="stylesheet" href="css/index.css" />
   </head>
+
   <body>
-    <div class="top-section">
-      <img src="assets/logo-ucb.jpg" alt="Logo UCB" class="logo" />
-    </div>
-
-    <div class="bottom-section">
-      <h1>ANÁLISIS DE ALGORITMOS</h1>
-
-      <div class="buttons">
-        <a href="teoria.html" class="btn">Contenido Teórico</a>
-        <a href="grafos.html" class="btn">Grafos Interactivos</a>
+    <!-- NAVBAR -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <h2 class="logo-text">Análisis de Algoritmos</h2>
+        <a href="grafos.html" class="nav-btn">Grafos Interactivos</a>
       </div>
-    </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-content">
+        <img src="assets/logo-ucb.jpg" alt="Logo UCB" class="logo" />
+        <h1>ANÁLISIS DE ALGORITMOS</h1>
+        <p>
+          Estudio formal del diseño, comportamiento y eficiencia de algoritmos
+          en función del tiempo y memoria computacional.
+        </p>
+      </div>
+    </header>
+
+    <!-- ¿QUÉ ES? -->
+    <section class="section section-white">
+      <div class="container two-columns">
+        <div class="text-column">
+          <h2>¿Qué es un algoritmo?</h2>
+          <p>
+            Un algoritmo es una secuencia finita y ordenada de instrucciones
+            diseñadas para resolver un problema específico. Constituye el núcleo
+            lógico de cualquier sistema informático.
+          </p>
+          <p>
+            Desde una perspectiva formal, todo algoritmo debe ser preciso,
+            finito, efectivo y producir al menos una salida válida.
+          </p>
+        </div>
+        <div class="image-column">
+          <img src="assets/algoritmo.png" alt="Algoritmo" />
+        </div>
+      </div>
+    </section>
+
+    <!-- SECCIÓN ESTILO CUADROS INFORMATIVOS -->
+    <section class="info-grid-section">
+      <div class="info-grid">
+        <!-- BLOQUE 1 -->
+        <div class="info-item">
+          <img src="assets/algoritmo.png" alt="Concepto" />
+          <div class="info-text">
+            <h3>Definición Formal</h3>
+            <p>
+              Un algoritmo representa una secuencia estructurada de pasos
+              lógicos orientados a resolver un problema específico mediante
+              reglas claramente establecidas.
+            </p>
+          </div>
+        </div>
+
+        <!-- BLOQUE 2 -->
+        <div class="info-item">
+          <img src="assets/Imagen-1.jpg" alt="Importancia" />
+          <div class="info-text">
+            <h3>Relevancia Tecnológica</h3>
+            <p>
+              Los algoritmos son el núcleo del desarrollo tecnológico,
+              permitiendo automatizar procesos, optimizar recursos y mejorar la
+              toma de decisiones en sistemas digitales.
+            </p>
+          </div>
+        </div>
+
+        <!-- BLOQUE 3 -->
+        <div class="info-item">
+          <img src="assets/Imagen-2.jpg" alt="Eficiencia" />
+          <div class="info-text">
+            <h3>Rendimiento</h3>
+            <p>
+              Evaluar el rendimiento implica analizar cuánto tiempo y memoria
+              requiere un algoritmo para ejecutarse en función del tamaño de los
+              datos.
+            </p>
+          </div>
+        </div>
+
+        <!-- BLOQUE 4 -->
+        <div class="info-item">
+          <img src="assets/Imagen-3.png" alt="Big-O" />
+          <div class="info-text">
+            <h3>Análisis Asintótico</h3>
+            <p>
+              El análisis asintótico permite predecir el comportamiento del
+              algoritmo ante grandes volúmenes de información, utilizando
+              notaciones matemáticas como Big-O.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CARACTERÍSTICAS -->
+    <section class="section section-gray">
+      <div class="container">
+        <h2>Características Fundamentales</h2>
+        <ul>
+          <li>
+            <strong>Finitud:</strong> termina en un número determinado de pasos.
+          </li>
+          <li>
+            <strong>Precisión:</strong> cada instrucción está claramente
+            definida.
+          </li>
+          <li><strong>Entrada:</strong> puede recibir datos iniciales.</li>
+          <li><strong>Salida:</strong> produce resultados definidos.</li>
+          <li><strong>Eficiencia:</strong> optimiza tiempo y memoria.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- IMPORTANCIA -->
+    <section class="section section-blue">
+      <div class="container">
+        <h2>Importancia del Análisis</h2>
+        <p>
+          El análisis de algoritmos permite evaluar su rendimiento cuando el
+          tamaño de entrada aumenta. No basta con que funcione; debe hacerlo de
+          forma eficiente.
+        </p>
+        <p>
+          Este estudio es esencial en motores de búsqueda, redes sociales,
+          sistemas financieros, inteligencia artificial y procesamiento masivo
+          de datos.
+        </p>
+      </div>
+    </section>
+
+    <!-- CLASIFICACIÓN -->
+    <section class="section section-white">
+      <div class="container">
+        <h2>Clasificación de los Algoritmos</h2>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Secuenciales</h3>
+            <p>Ejecución lineal de instrucciones.</p>
+          </div>
+
+          <div class="card">
+            <h3>Iterativos</h3>
+            <p>Uso de ciclos repetitivos.</p>
+          </div>
+
+          <div class="card">
+            <h3>Recursivos</h3>
+            <p>Se llaman a sí mismos.</p>
+          </div>
+
+          <div class="card">
+            <h3>Divide y Vencerás</h3>
+            <p>Resuelven subproblemas.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COMPLEJIDAD -->
+    <section class="section section-gray">
+      <div class="container">
+        <h2>Complejidad Computacional</h2>
+        <p>
+          Estudia cómo crece el consumo de tiempo y memoria en función del
+          tamaño de entrada (n). Se analiza mediante notaciones como O, Ω y Θ.
+        </p>
+
+        <div class="cards">
+          <div class="card">O(1)</div>
+          <div class="card">O(n)</div>
+          <div class="card">O(n log n)</div>
+          <div class="card">O(n²)</div>
+          <div class="card">O(2ⁿ)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- APLICACIONES -->
+    <section class="section section-white">
+      <div class="container">
+        <h2>Aplicaciones en el Mundo Real</h2>
+        <p>
+          El análisis de algoritmos es fundamental para optimizar rutas,
+          clasificar información, proteger datos mediante criptografía y
+          desarrollar sistemas inteligentes.
+        </p>
+      </div>
+    </section>
+
+    <!-- VIDEOS -->
+    <section class="section section-blue">
+      <div class="container">
+        <h2>Videos Explicativos</h2>
+
+        <div class="video-grid">
+          <div class="video-card">
+            <iframe
+              src="https://www.youtube.com/embed/8hly31xKli0"
+              allowfullscreen
+            >
+            </iframe>
+            <p>¿Qué es un algoritmo?</p>
+          </div>
+
+          <div class="video-card">
+            <iframe
+              src="https://www.youtube.com/embed/6hfOvs8pY1k"
+              allowfullscreen
+            >
+            </iframe>
+            <p>Explicación detallada</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRAFOS -->
+    <section class="section section-gray">
+      <div class="container">
+        <h2>Aplicación en Grafos</h2>
+        <p>
+          Los grafos modelan relaciones entre elementos. Algoritmos como BFS,
+          DFS y Dijkstra permiten analizar redes de transporte, comunicación y
+          sistemas complejos.
+        </p>
+
+        <a href="grafos.html" class="main-btn">
+          Explorar Grafos Interactivos
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">Proyecto Académico – Ingeniería de Sistemas</footer>
   </body>
 </html>
