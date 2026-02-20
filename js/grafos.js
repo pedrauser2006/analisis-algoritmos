@@ -12,8 +12,9 @@ let draggingVertex = null;
 /* ------------------ CLASES ------------------ */
 
 class Vertex {
-  constructor(x, y) {
+  constructor(x, y, label) {
     this.id = vertexCounter++;
+    this.label = label; // NUEVO
     this.x = x;
     this.y = y;
     this.radius = 30;
@@ -43,7 +44,7 @@ function drawVertex(vertex) {
   ctx.font = "16px Arial";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(vertex.id, vertex.x, vertex.y);
+  ctx.fillText(vertex.label, vertex.x, vertex.y);
 }
 
 function drawEdge(edge) {
@@ -198,7 +199,14 @@ canvas.addEventListener("dblclick", function (e) {
     }
   }
 
-  vertices.push(new Vertex(x, y));
+  let nombre = prompt("Ingrese el nombre del nodo:");
+
+  if (nombre === null || nombre.trim() === "") {
+    nombre = "N" + vertexCounter;
+  }
+
+  vertices.push(new Vertex(x, y, nombre));
+
   redraw();
 });
 
@@ -222,10 +230,16 @@ canvas.addEventListener("click", function (e) {
         let respuesta = prompt("¿Es dirigido? (si/no)");
         let directed = respuesta && respuesta.toLowerCase() === "si";
 
-        let weight = prompt("Ingrese el peso:");
+        let weightInput = prompt("Ingrese el peso (solo números):");
 
-        if (weight !== null) {
-          edges.push(new Edge(selectedVertex, vertex, weight, directed));
+        if (weightInput !== null) {
+          let weight = Number(weightInput);
+
+          if (!isNaN(weight)) {
+            edges.push(new Edge(selectedVertex, vertex, weight, directed));
+          } else {
+            alert("Error: El peso debe ser un número.");
+          }
         }
 
         selectedVertex = null;
