@@ -36,15 +36,18 @@ table th {
 .layout {
   flex: 1;
   display: flex;
-  width: 95%;
-  margin: 0 auto 20px auto;
+  width: 100%;
+  margin: 0;
   gap: 20px;
+  padding: 0 20px 20px 20px;
+  box-sizing: border-box;
 }
 
 /* IZQUIERDA - CANVAS */
 
 .canvas-container {
   flex: 1;
+  min-height: 0;
   background: white;
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
@@ -63,6 +66,7 @@ table th {
 
 .matrix-container {
   flex: 1;
+  min-height: 0;
   background: white;
   border-radius: 10px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
