@@ -175,10 +175,16 @@ function redraw() {
 /* ------------------ AJUSTAR TAMAÑO ------------------ */
 
 function resizeCanvas() {
-  canvas.width = window.innerWidth * 0.9;
-  canvas.height = window.innerHeight * 0.75;
+  const container = document.querySelector(".canvas-container");
+
+  canvas.width = container.clientWidth - 20;
+  canvas.height = container.clientHeight - 20;
+
   redraw();
 }
+
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
 
 resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
@@ -280,3 +286,61 @@ canvas.addEventListener("mousemove", function (e) {
 canvas.addEventListener("mouseup", function () {
   draggingVertex = null;
 });
+
+function limpiarGrafo() {
+  vertices = [];
+  edges = [];
+  selectedVertex = null;
+  vertexCounter = 0;
+  redraw();
+}
+
+function generarMatriz() {
+  if (vertices.length === 0) {
+    alert("No hay nodos en el grafo.");
+    return;
+  }
+
+  let size = vertices.length;
+  let matriz = [];
+
+  for (let i = 0; i < size; i++) {
+    matriz[i] = [];
+    for (let j = 0; j < size; j++) {
+      matriz[i][j] = 0;
+    }
+  }
+
+  edges.forEach((edge) => {
+    let i = vertices.indexOf(edge.from);
+    let j = vertices.indexOf(edge.to);
+
+    matriz[i][j] = edge.weight;
+
+    if (!edge.directed) {
+      matriz[j][i] = edge.weight;
+    }
+  });
+
+  let html = "<table><tr><th></th>";
+
+  vertices.forEach((v) => {
+    html += `<th>${v.label}</th>`;
+  });
+
+  html += "</tr>";
+
+  for (let i = 0; i < size; i++) {
+    html += `<tr><th>${vertices[i].label}</th>`;
+
+    for (let j = 0; j < size; j++) {
+      html += `<td>${matriz[i][j]}</td>`;
+    }
+
+    html += "</tr>";
+  }
+
+  html += "</table>";
+
+  document.getElementById("matrizContainer").innerHTML = html;
+}

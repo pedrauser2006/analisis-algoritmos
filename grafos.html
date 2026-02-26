@@ -7,9 +7,41 @@
     <title>Grafos Interactivos</title>
   </head>
   <body>
-    <h2>Grafos Interactivo</h2>
+      <h2>Grafos Interactivo</h2>
 
-    <canvas id="canvasGrafo"></canvas>
+      <div class="layout">
+
+        <!-- IZQUIERDA: PIZARRA -->
+        <div class="canvas-container">
+          <canvas id="canvasGrafo"></canvas>
+        </div>
+
+        <!-- DERECHA: PANEL -->
+        <div class="matrix-container">
+
+          <button onclick="limpiarGrafo()">Limpiar Grafo</button>
+
+          <h3>Instrucciones</h3>
+        <ul>
+          <li>Doble click → Crear nodo</li>
+          <li>Click nodo + nodo → Crear arista</li>
+          <li>Arrastrar nodo → Mover</li>
+          <li>Definir dirigido y peso</li>
+        </ul>
+
+        <h3>Matriz de Adyacencia</h3>
+        <button onclick="generarMatriz()">Generar Matriz</button>
+
+        <div class="matrix-scroll">
+          <div id="matrizContainer"></div>
+        </div>
+
+  </div>
+
+</div>
+      <!-- CANVAS -->
+      <canvas id="canvasGrafo"></canvas>
+    </div>
 
     <script src="js/grafos.js"></script>
   </body>
