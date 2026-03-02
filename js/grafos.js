@@ -322,6 +322,7 @@ function generarMatriz() {
     }
   });
 
+  // ---- MATRIZ NORMAL ----
   let html = "<table><tr><th></th>";
 
   vertices.forEach((v) => {
@@ -342,5 +343,108 @@ function generarMatriz() {
 
   html += "</table>";
 
+  // ---- CALCULAR MÉTRICAS ----
+
+  let sumaFilas = [];
+  let conteoFilas = [];
+  let sumaColumnas = new Array(size).fill(0);
+  let conteoColumnas = new Array(size).fill(0);
+
+  for (let i = 0; i < size; i++) {
+    let suma = 0;
+    let conteo = 0;
+
+    for (let j = 0; j < size; j++) {
+      let valor = matriz[i][j];
+
+      if (valor !== 0) {
+        suma += valor;
+        conteo++;
+        sumaColumnas[j] += valor;
+        conteoColumnas[j]++;
+      }
+    }
+
+    sumaFilas.push(suma);
+    conteoFilas.push(conteo);
+  }
+
+  // ---- RESUMEN FUERA DE LA MATRIZ ----
+
+  html += "<div class='resumen-matriz'>";
+
+  html += "<h4>Resumen por Filas</h4>";
+  vertices.forEach((v, i) => {
+    html += `<p><strong>${v.label}</strong> → Suma: ${sumaFilas[i]} | Aristas: ${conteoFilas[i]}</p>`;
+  });
+
+  html += "<h4>Resumen por Columnas</h4>";
+  vertices.forEach((v, i) => {
+    html += `<p><strong>${v.label}</strong> → Suma: ${sumaColumnas[i]} | Aristas: ${conteoColumnas[i]}</p>`;
+  });
+
+  html += "</div>";
+
   document.getElementById("matrizContainer").innerHTML = html;
+}
+
+function exportarJSON() {
+  const data = {
+    vertices: vertices.map((v) => ({
+      id: v.id,
+      label: v.label,
+      x: v.x,
+      y: v.y,
+    })),
+    edges: edges.map((e) => ({
+      from: e.from.id,
+      to: e.to.id,
+      weight: e.weight,
+      directed: e.directed,
+    })),
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], {
+    type: "application/json",
+  });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "grafo.json";
+  link.click();
+}
+
+function importarJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const data = JSON.parse(e.target.result);
+
+    vertices = [];
+    edges = [];
+    selectedVertex = null;
+    vertexCounter = 0;
+
+    // Reconstruir vértices
+    data.vertices.forEach((v) => {
+      const nuevo = new Vertex(v.x, v.y, v.label);
+      nuevo.id = v.id;
+      vertices.push(nuevo);
+      vertexCounter++;
+    });
+
+    // Reconstruir aristas
+    data.edges.forEach((e) => {
+      const from = vertices.find((v) => v.id === e.from);
+      const to = vertices.find((v) => v.id === e.to);
+      edges.push(new Edge(from, to, e.weight, e.directed));
+    });
+
+    redraw();
+  };
+
+  reader.readAsText(file);
 }

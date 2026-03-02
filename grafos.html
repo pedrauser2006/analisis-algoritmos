@@ -32,11 +32,15 @@
         <h3>Matriz de Adyacencia</h3>
         <button onclick="generarMatriz()">Generar Matriz</button>
 
+        <button onclick="exportarJSON()">Exportar JSON</button>
+        <button onclick="document.getElementById('fileInput').click()">Importar JSON</button>
+        <input type="file" id="fileInput" accept=".json" style="display:none" onchange="importarJSON(event)">
+
         <div class="matrix-scroll">
           <div id="matrizContainer"></div>
         </div>
 
-  </div>
+        </div>
 
     <script src="js/grafos.js"></script>
   </body>

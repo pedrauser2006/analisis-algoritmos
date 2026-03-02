@@ -111,3 +111,20 @@ table th {
   background: #1c4c7c;
   color: white;
 }
+
+.resumen-matriz {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f4f6f9;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.resumen-matriz h4 {
+  margin-bottom: 8px;
+  color: #1c4c7c;
+}
+
+.resumen-matriz p {
+  margin: 4px 0;
+}
