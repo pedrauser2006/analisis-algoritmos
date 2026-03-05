@@ -208,7 +208,8 @@ canvas.addEventListener("dblclick", function (e) {
   let nombre = prompt("Ingrese el nombre del nodo:");
 
   if (nombre === null || nombre.trim() === "") {
-    nombre = "N" + vertexCounter;
+    alert("Debe ingresar un nombre válido para el nodo.");
+    return;
   }
 
   vertices.push(new Vertex(x, y, nombre));
@@ -234,19 +235,37 @@ canvas.addEventListener("click", function (e) {
         selectedVertex = vertex;
       } else {
         let respuesta = prompt("¿Es dirigido? (si/no)");
-        let directed = respuesta && respuesta.toLowerCase() === "si";
+
+        if (
+          !respuesta ||
+          (respuesta.toLowerCase() !== "si" && respuesta.toLowerCase() !== "no")
+        ) {
+          alert("Debe indicar correctamente si es dirigido (si o no).");
+          selectedVertex = null;
+          return; // ⛔ NO CREA ARISTA
+        }
+
+        let directed = respuesta.toLowerCase() === "si";
 
         let weightInput = prompt("Ingrese el peso (solo números):");
 
-        if (weightInput !== null) {
-          let weight = Number(weightInput);
-
-          if (!isNaN(weight)) {
-            edges.push(new Edge(selectedVertex, vertex, weight, directed));
-          } else {
-            alert("Error: El peso debe ser un número.");
-          }
+        if (weightInput === null || weightInput.trim() === "") {
+          alert("Debe ingresar un peso.");
+          selectedVertex = null;
+          return; // ⛔ NO CREA ARISTA
         }
+
+        let weight = Number(weightInput);
+
+        if (isNaN(weight)) {
+          alert("El peso debe ser un número válido.");
+          selectedVertex = null;
+          return; // ⛔ NO CREA ARISTA
+        }
+
+        edges.push(new Edge(selectedVertex, vertex, weight, directed));
+        selectedVertex = null;
+        redraw();
 
         selectedVertex = null;
         redraw();
@@ -322,73 +341,84 @@ function generarMatriz() {
     }
   });
 
-  // ---- MATRIZ NORMAL ----
+  let sumaColumnas = new Array(size).fill(0);
+  let conteoColumnas = new Array(size).fill(0);
+
+  let totalPesos = 0;
+  let totalAristas = 0;
+
   let html = "<table><tr><th></th>";
 
   vertices.forEach((v) => {
     html += `<th>${v.label}</th>`;
   });
 
-  html += "</tr>";
+  html += "<th>Suma Fila</th><th># Aristas Fila</th></tr>";
 
   for (let i = 0; i < size; i++) {
+    let sumaFila = 0;
+    let conteoFila = 0;
+
     html += `<tr><th>${vertices[i].label}</th>`;
 
     for (let j = 0; j < size; j++) {
-      html += `<td>${matriz[i][j]}</td>`;
-    }
-
-    html += "</tr>";
-  }
-
-  html += "</table>";
-
-  // ---- CALCULAR MÉTRICAS ----
-
-  let sumaFilas = [];
-  let conteoFilas = [];
-  let sumaColumnas = new Array(size).fill(0);
-  let conteoColumnas = new Array(size).fill(0);
-
-  for (let i = 0; i < size; i++) {
-    let suma = 0;
-    let conteo = 0;
-
-    for (let j = 0; j < size; j++) {
       let valor = matriz[i][j];
+      html += `<td>${valor}</td>`;
 
       if (valor !== 0) {
-        suma += valor;
-        conteo++;
+        sumaFila += valor;
+        conteoFila++;
+
         sumaColumnas[j] += valor;
         conteoColumnas[j]++;
+
+        totalPesos += valor;
+        totalAristas++;
       }
     }
 
-    sumaFilas.push(suma);
-    conteoFilas.push(conteo);
+    html += `<td><strong>${sumaFila}</strong></td>`;
+    html += `<td><strong>${conteoFila}</strong></td></tr>`;
   }
 
-  // ---- RESUMEN FUERA DE LA MATRIZ ----
+  // FILA DE SUMAS
+  html += "<tr><th>Suma Col</th>";
 
-  html += "<div class='resumen-matriz'>";
+  for (let j = 0; j < size; j++) {
+    html += `<td><strong>${sumaColumnas[j]}</strong></td>`;
+  }
 
-  html += "<h4>Resumen por Filas</h4>";
-  vertices.forEach((v, i) => {
-    html += `<p><strong>${v.label}</strong> → Suma: ${sumaFilas[i]} | Aristas: ${conteoFilas[i]}</p>`;
-  });
+  html += `<td><strong>${totalPesos}</strong></td>`;
+  html += `<td><strong>${totalAristas}</strong></td></tr>`;
 
-  html += "<h4>Resumen por Columnas</h4>";
-  vertices.forEach((v, i) => {
-    html += `<p><strong>${v.label}</strong> → Suma: ${sumaColumnas[i]} | Aristas: ${conteoColumnas[i]}</p>`;
-  });
+  // FILA DE CONTEO DE ARISTAS
+  html += "<tr><th># Aristas Col</th>";
 
-  html += "</div>";
+  for (let j = 0; j < size; j++) {
+    html += `<td><strong>${conteoColumnas[j]}</strong></td>`;
+  }
+
+  html += `<td>-</td><td><strong>${totalAristas}</strong></td></tr>`;
+
+  html += "</table>";
 
   document.getElementById("matrizContainer").innerHTML = html;
+
+  resizeCanvas();
 }
 
 function exportarJSON() {
+  if (vertices.length === 0) {
+    alert("No hay grafo para exportar.");
+    return;
+  }
+
+  let nombre = prompt("Ingrese el nombre del archivo:");
+
+  if (!nombre || nombre.trim() === "") {
+    nombre = "grafo";
+  }
+
   const data = {
     vertices: vertices.map((v) => ({
       id: v.id,
@@ -410,7 +440,7 @@ function exportarJSON() {
 
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "grafo.json";
+  link.download = nombre + ".json";
   link.click();
 }
 
