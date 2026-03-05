@@ -8,6 +8,7 @@ let edges = [];
 let selectedVertex = null;
 let vertexCounter = 0;
 let draggingVertex = null;
+let selectedEdge = null;
 
 /* ------------------ CLASES ------------------ */
 
@@ -233,6 +234,7 @@ canvas.addEventListener("click", function (e) {
     if (distance <= vertex.radius) {
       if (!selectedVertex) {
         selectedVertex = vertex;
+        selectedEdge = null;
       } else {
         let respuesta = prompt("¿Es dirigido? (si/no)");
 
@@ -274,6 +276,21 @@ canvas.addEventListener("click", function (e) {
       break;
     }
   }
+
+  // 🔴 Detectar arista seleccionada
+  for (let edge of edges) {
+    let midX = (edge.from.x + edge.to.x) / 2;
+    let midY = (edge.from.y + edge.to.y) / 2;
+
+    let dx = x - midX;
+    let dy = y - midY;
+
+    if (Math.sqrt(dx * dx + dy * dy) < 20) {
+      selectedEdge = edge;
+      selectedVertex = null;
+      return;
+    }
+  }
 });
 
 // Arrastrar
@@ -304,6 +321,51 @@ canvas.addEventListener("mousemove", function (e) {
 
 canvas.addEventListener("mouseup", function () {
   draggingVertex = null;
+});
+
+canvas.addEventListener("contextmenu", function (e) {
+  e.preventDefault(); // Evita menú del navegador
+
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+
+  // 🔵 Verificar si es nodo
+  for (let vertex of vertices) {
+    let dx = x - vertex.x;
+    let dy = y - vertex.y;
+
+    if (Math.sqrt(dx * dx + dy * dy) <= vertex.radius) {
+      let nuevoNombre = prompt("Editar nombre del nodo:", vertex.label);
+
+      if (nuevoNombre && nuevoNombre.trim() !== "") {
+        vertex.label = nuevoNombre;
+        redraw();
+      }
+
+      return;
+    }
+  }
+
+  // 🔴 Verificar si es arista
+  for (let edge of edges) {
+    let midX = (edge.from.x + edge.to.x) / 2;
+    let midY = (edge.from.y + edge.to.y) / 2;
+
+    let dx = x - midX;
+    let dy = y - midY;
+
+    if (Math.sqrt(dx * dx + dy * dy) < 20) {
+      let nuevoPeso = prompt("Editar peso:", edge.weight);
+
+      if (nuevoPeso !== null && !isNaN(Number(nuevoPeso))) {
+        edge.weight = Number(nuevoPeso);
+        redraw();
+      }
+
+      return;
+    }
+  }
 });
 
 function limpiarGrafo() {
@@ -477,4 +539,44 @@ function importarJSON(event) {
   };
 
   reader.readAsText(file);
+}
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Delete") {
+    // 🔵 Eliminar nodo
+    if (selectedVertex) {
+      edges = edges.filter(
+        (edge) => edge.from !== selectedVertex && edge.to !== selectedVertex,
+      );
+
+      vertices = vertices.filter((v) => v !== selectedVertex);
+
+      selectedVertex = null;
+      redraw();
+    }
+
+    // 🔴 Eliminar arista
+    if (selectedEdge) {
+      edges = edges.filter((e) => e !== selectedEdge);
+      selectedEdge = null;
+      redraw();
+    }
+  }
+});
+
+function mostrarHelp() {
+  alert(`
+FUNCIONAMIENTO DEL SISTEMA:
+
+- Doble click: Crear nodo
+- Click nodo + nodo: Crear arista
+- Click derecho: Editar nodo o peso
+- Delete: Eliminar nodo o arista
+- Arrastrar nodo: Moverlo
+
+Notas:
+- Debe ingresar nombre válido
+- Debe ingresar si es dirigido (si/no)
+- Debe ingresar peso numérico
+`);
 }
